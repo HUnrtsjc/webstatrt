@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>บันทึกข้อมูลลง SQLite</title>
+</head>
+<body>
+    <h2>ฟอร์มบันทึกข้อมูล</h2>
+    <form id="dataForm">
+        <label for="name">ชื่อ:</label><br>
+        <input type="text" id="name" name="name" required><br><br>
+
+        <label for="email">อีเมล:</label><br>
+        <input type="email" id="email" name="email" required><br><br>
+
+        <label for="message">ข้อความ:</label><br>
+        <textarea id="message" name="message" rows="4" cols="50" required></textarea><br><br>
+
+        <input type="submit" value="บันทึกข้อมูล">
+    </form>
+
+    <script>
+        document.getElementById('dataForm').addEventListener('submit', function(event) {
+            event.preventDefault(); // ป้องกันฟอร์มจากการส่งใหม่
+            
+            const formData = new FormData(this);
+
+            fetch('save_data.php', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('มีข้อผิดพลาดในการบันทึกข้อมูล');
+                }
+                return response.text();
+            })
+            .then(data => {
+                console.log('บันทึกข้อมูลเรียบร้อยแล้ว:', data);
+                // ดำเนินการต่อหลังจากการบันทึกข้อมูลเช่น แสดงข้อความความสำเร็จหรือรีเฟรชหน้าเว็บ
+            })
+            .catch(error => {
+                console.error('เกิดข้อผิดพลาดในการบันทึกข้อมูล:', error);
+                // แสดงข้อความหรือดำเนินการเพิ่มเติมตามความเหมาะสมเมื่อเกิดข้อผิดพลาด
+            });
+        });
+    </script>
+</body>
+  </html
